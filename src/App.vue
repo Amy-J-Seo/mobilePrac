@@ -1,21 +1,19 @@
 <template>
   <div class="app">
-    <app-header />
+    <AppHeader />
     <!-- and links -->
-
-    <div>
+<router-view></router-view>
+    <!-- <div>
       <h3>Data Table</h3>
       <ve-table
         :columns="columns"
         :table-data="tableData"
-        :border-around="false"
         :border-x="true"
         :border-y="true"
         :cell-style-option="cellStyleOption"
       />
-    </div>
+    </div> -->
     <!-- make one chart -->
-
     <div class="hello" ref="chartdiv"></div>
   </div>
 </template>
@@ -150,17 +148,18 @@ export default {
 </script>
 
 <style>
+  .app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 20px;
+  }
+
 .hello {
   width: 100%;
   height: 300px;
-}
-.app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 
 .table-body-cell-class1 {
