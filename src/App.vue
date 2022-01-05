@@ -2,7 +2,8 @@
   <div class="app">
     <AppHeader />
     <!-- and links -->
-<router-view></router-view>
+    <router-view></router-view>
+    <br />
     <!-- <div>
       <h3>Data Table</h3>
       <ve-table
@@ -148,14 +149,14 @@ export default {
 </script>
 
 <style>
-  .app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 20px;
-  }
+.app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 20px;
+}
 
 .hello {
   width: 100%;
