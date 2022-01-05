@@ -41,5 +41,17 @@ export const store = new Vuex.Store({
       state.password = userPass;
       console.log("password updated", state.password);
     },
+    userLogOut(state) {
+      state.password = "";
+      state.userId = "";
+      localStorage.removeItem("loginInfo");
+    },
+    logoutTimeout(state) {
+      setTimeout(function () {
+        localStorage.removeItem("loginInfo");
+        state.password = "";
+        state.userId = "";
+      }, 120 * 1000);
+    },
   },
 });

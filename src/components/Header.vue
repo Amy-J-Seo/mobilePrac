@@ -11,12 +11,13 @@
       <router-link to="/setting" class="navlink"> setting </router-link>
     </div>
 
-    <button v-if="userId != ''" @click="loggoutFnc">log out</button>
+    <button v-if="userId != ''" @click="logoutHandler">log out</button>
     <button v-else @click="loginHandler">login</button>
 
-    <!-- <div id="userInfo">
+    <div id="userInfo">
       <p>{{ userId }}</p>
-    </div> -->
+    </div>
+
     <font-awesome-icon icon="hamburger" @click="toggleLink" id="toggleBtn" />
   </div>
 </template>
@@ -44,9 +45,8 @@ export default {
     toggleLink() {
       this.linkVisible = !this.linkVisible;
     },
-    loggoutFnc() {
-      console.log("clicked");
-      localStorage.removeItem("loginInfo");
+    logoutHandler() {
+      this.$store.commit("userLogOut");
     },
     loginHandler() {},
   },
@@ -97,9 +97,5 @@ export default {
 }
 #toggleBtn:hover {
   background-color: lightblue;
-}
-
-.isLoggedIn {
-  display: none;
 }
 </style>

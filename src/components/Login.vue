@@ -54,9 +54,7 @@ export default {
       this.$store.commit("setUserId", this.id);
       this.$store.commit("setUserPass", this.password);
 
-      setTimeout(function () {
-        localStorage.removeItem("loginInfo");
-      }, 120 * 1000);
+      this.$store.commit("logoutTimeout");
       localStorage.setItem(
         "loginInfo",
         JSON.stringify({
