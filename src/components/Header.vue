@@ -12,7 +12,9 @@
     </div>
 
     <button v-if="userId != ''" @click="logoutHandler">log out</button>
-    <button v-else @click="loginHandler">login</button>
+    <button v-else @click="loginHandler">
+      <router-link to="/login">To login page</router-link>
+    </button>
 
     <div id="userInfo">
       <p>{{ userId }}</p>

@@ -64,7 +64,6 @@ export default {
         }),
         5000
       );
-
       this.success = "Login Success";
     },
   },
