@@ -51,6 +51,21 @@ export default {
         this.validationMsg = "Enter a valid id and password";
         return;
       }
+      this.$store.commit("setUserId", this.id);
+      this.$store.commit("setUserPass", this.password);
+
+      setTimeout(function () {
+        localStorage.removeItem("loginInfo");
+      }, 120 * 1000);
+      localStorage.setItem(
+        "loginInfo",
+        JSON.stringify({
+          userId: this.id,
+          userPass: this.password,
+          isLoggedIn: true,
+        }),
+        5000
+      );
 
       this.success = "Login Success";
     },

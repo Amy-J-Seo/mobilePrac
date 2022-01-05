@@ -4,6 +4,7 @@ import About from "./components/About.vue";
 import Login from "./components/Login.vue";
 import ContactUs from "./components/ContactUs.vue";
 import PasswordChange from "./components/PasswordChange.vue";
+import Setting from "./components/Setting.vue";
 
 Vue.use(VueRouter);
 
@@ -12,6 +13,7 @@ const route = [
   { path: "/login", component: Login },
   { path: "/contactus", component: ContactUs },
   { path: "/changepassword", component: PasswordChange },
+  { path: "/setting", component: Setting },
 ];
 
 const router = new VueRouter({

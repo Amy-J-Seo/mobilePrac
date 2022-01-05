@@ -8,24 +8,47 @@
       <router-link to="/changepassword" class="navlink">
         비밀번호바꾸기
       </router-link>
+      <router-link to="/setting" class="navlink"> setting </router-link>
     </div>
+
+    <button v-if="userId != ''" @click="loggoutFnc">log out</button>
+    <button v-else @click="loginHandler">login</button>
+
+    <!-- <div id="userInfo">
+      <p>{{ userId }}</p>
+    </div> -->
     <font-awesome-icon icon="hamburger" @click="toggleLink" id="toggleBtn" />
   </div>
 </template>
 
 <script>
+import { mapGetters, mapState } from "vuex";
 export default {
-  name: "header",
+  name: "Header",
   data() {
     return {
+      isLoggedIn: false,
       linkVisible: false,
+      msg: "",
     };
+  },
+  computed: {
+    ...mapGetters({
+      userId: (state) => state.userId,
+    }),
+    ...mapState({
+      userId: (state) => state.userId,
+    }),
   },
   methods: {
     toggleLink() {
-      console.log(this.linkVisible);
       this.linkVisible = !this.linkVisible;
     },
+    loggoutFnc() {
+      console.log("clicked");
+      localStorage.removeItem("loginInfo");
+    },
+    loginHandler() {},
   },
 };
 </script>
@@ -54,7 +77,7 @@ export default {
 }
 .active {
   display: block;
-  height: 200px;
+  height: 250px;
 }
 .notactive {
   display: none;
@@ -66,7 +89,17 @@ export default {
   right: 15px;
   top: 15px;
 }
+#userInfo {
+  display: block;
+  position: absolute;
+  right: 70px;
+  top: 0px;
+}
 #toggleBtn:hover {
   background-color: lightblue;
+}
+
+.isLoggedIn {
+  display: none;
 }
 </style>

@@ -9,6 +9,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
 import { faHamburger } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { store } from "./store/store";
 
 Vue.config.productionTip = false;
 
@@ -20,5 +21,6 @@ Vue.use(VueEasytable);
 
 new Vue({
   router,
+  store,
   render: (h) => h(App),
 }).$mount("#app");
