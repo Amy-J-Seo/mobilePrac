@@ -6,6 +6,7 @@ import ContactUs from "./components/ContactUs.vue";
 import PasswordChange from "./components/PasswordChange.vue";
 import Setting from "./components/Setting.vue";
 import Register from "./components/Register.vue";
+import IpControl from "./components/IpControl.vue";
 
 Vue.use(VueRouter);
 
@@ -16,6 +17,7 @@ const route = [
   { path: "/changepassword", component: PasswordChange },
   { path: "/setting", component: Setting },
   { path: "/register", component: Register },
+  { path: "/ipcontrol", component: IpControl },
 ];
 
 const router = new VueRouter({

@@ -15,6 +15,9 @@
       />
     </div> -->
     <!-- make one chart -->
+    <br /><br />
+    <hr />
+
     <div class="hello" ref="chartdiv"></div>
   </div>
 </template>
