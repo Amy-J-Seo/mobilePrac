@@ -20,7 +20,7 @@
       <br />
       <div id="btnContainer">
         <button type="submit">로그인</button>
-        <button type="button">회원가입</button>
+        <button type="button" @click="registerBtnHandler">회원가입</button>
       </div>
     </form>
 
@@ -65,6 +65,10 @@ export default {
         5000
       );
       this.success = "Login Success";
+      this.$router.push("/about");
+    },
+    registerBtnHandler() {
+      this.$router.push("/register");
     },
   },
 };

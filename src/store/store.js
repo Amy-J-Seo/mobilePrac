@@ -10,14 +10,7 @@ export const store = new Vuex.Store({
         JSON.parse(localStorage.getItem("loginInfo")).userId) ||
       "",
     password: "",
-    todos: [
-      { id: 1, text: "1", done: true },
-      { id: 2, text: "d", done: true },
-      { id: 3, text: "3", done: true },
-      { id: 4, text: "4", done: true },
-      { id: 5, text: "5", done: false },
-      { id: 6, text: "6", done: false },
-    ],
+    users: [],
   },
   getters: {
     getUserId: (state) => {
@@ -28,18 +21,16 @@ export const store = new Vuex.Store({
       console.log("getting user Pass");
       return state.password;
     },
-    doneTodos: (state) => {
-      return state.todos.filter((toda) => toda.done);
+    getUsersList: (state) => {
+      return state.users;
     },
   },
   mutations: {
     setUserId(state, userId) {
       state.userId = userId;
-      console.log("userId updated", state.userId);
     },
     setUserPass(state, userPass) {
       state.password = userPass;
-      console.log("password updated", state.password);
     },
     userLogOut(state) {
       state.password = "";
@@ -52,6 +43,26 @@ export const store = new Vuex.Store({
         state.password = "";
         state.userId = "";
       }, 120 * 1000);
+    },
+    registerUser(state, payload) {
+      const date = new Date();
+      state.users.push({
+        userId: payload.uid,
+        userPassword: payload.upassword,
+        userName: payload.uname,
+        userEmail: payload.uemail,
+        date: date.getMonth() + 1 + "/" + date.getDay(),
+        mod: "",
+      });
+    },
+    unRegisterUser(state, payload) {
+      const userToRemove = state.users.find((user) => {
+        return user.userId === payload;
+      });
+      // state.users = state.users.filter((user) => {
+      //   return user.userId !== userToRemove.userId;
+      // });
+      state.users.splice(state.users.indexOf(userToRemove), 1);
     },
   },
 });

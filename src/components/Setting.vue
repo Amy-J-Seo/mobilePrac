@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="upperPart">
-      <h4>setting</h4>
+      <h4>Register Users</h4>
       <p>Lorem ipsum dolor sit amet consectetur</p>
     </div>
 

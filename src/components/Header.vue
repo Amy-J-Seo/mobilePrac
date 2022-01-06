@@ -11,16 +11,20 @@
       <router-link to="/setting" class="navlink"> setting </router-link>
     </div>
 
-    <button v-if="userId != ''" @click="logoutHandler">log out</button>
-    <button v-else @click="loginHandler">
-      <router-link to="/login">To login page</router-link>
-    </button>
-
     <div id="userInfo">
       <p>{{ userId }}</p>
     </div>
-
-    <font-awesome-icon icon="hamburger" @click="toggleLink" id="toggleBtn" />
+    <div id="toggleBtn">
+      <button v-if="userId != ''" @click="logoutHandler">log out</button>
+      <button
+        v-else
+        @click="loginHandler"
+        :class="[linkVisible ? 'notactive' : 'showBtn']"
+      >
+        <router-link to="/login">To login page</router-link>
+      </button>
+      <font-awesome-icon icon="hamburger" @click="toggleLink" />
+    </div>
   </div>
 </template>
 
@@ -49,6 +53,7 @@ export default {
     },
     logoutHandler() {
       this.$store.commit("userLogOut");
+      this.$router.push("/login");
     },
     loginHandler() {},
   },
@@ -86,7 +91,7 @@ export default {
   height: 50px;
 }
 #toggleBtn {
-  display: block;
+  display: flex;
   position: absolute;
   right: 15px;
   top: 15px;
@@ -99,5 +104,8 @@ export default {
 }
 #toggleBtn:hover {
   background-color: lightblue;
+}
+.showBtn {
+  display: block;
 }
 </style>
