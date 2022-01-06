@@ -50,7 +50,7 @@ const ipStore = {
           date: respData[i].date,
         });
       }
-      commit("", resp);
+      commit("addNewIpList", resp);
     },
   },
   mutations: {
