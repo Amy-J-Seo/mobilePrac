@@ -1,65 +1,80 @@
+import axios from "axios";
+
 const loginStore = {
   namespaced: true,
   state: {
-    userId:
-      (localStorage.getItem("loginInfo") != null &&
-        JSON.parse(localStorage.getItem("loginInfo")).userId) ||
-      "",
+    usersData: {},
+    usersList: [],
+    userId: "",
     password: "",
-    users: [],
+    msg: "",
   },
   getters: {
-    getUserId: (state) => {
-      console.log("getting user Id", state.userId);
-      return state.userId;
+    getUsersListAll: (state) => state.usersList,
+    getUserId: (state) => state.userId,
+    getUserPass: (state) => state.password,
+  },
+  actions: {
+    async fetchUsersList({ commit }) {
+      const response = await axios.get(
+        "https://vue-axios-upload-default-rtdb.firebaseio.com/member.json"
+      );
+      let arr = [];
+      if (response.data === null) {
+        return;
+      } else {
+        Object.entries(response.data).forEach((val) => {
+          const [key, value] = val;
+          console.log(key);
+          arr.push(value);
+        });
+      }
+      commit("setUsersList", arr);
+      commit("setUsersData", response.data);
     },
-    getUserPass: (state) => {
-      console.log("getting user Pass");
-      return state.password;
+    async registerUser({ state, commit }, userInfo) {
+      console.log(userInfo);
+      const response = await axios.post(
+        "https://vue-axios-upload-default-rtdb.firebaseio.com/member.json",
+        userInfo
+      );
+      if (response.status === "OK") {
+        state.msg = "Successfully registered";
+      }
+
+      commit("addUser", userInfo);
     },
-    getUsersList: (state) => {
-      return state.users;
+    async removeUser({ state, commit }, userId) {
+      function getKeyByValue(object, value) {
+        return Object.keys(object).find((key) => object[key].uid === value);
+      }
+      const userToRemove = getKeyByValue(state.usersData, userId.uid);
+      const response = await axios.delete(
+        `https://vue-axios-upload-default-rtdb.firebaseio.com/member.json/${userToRemove}`
+      );
+      console.log(response);
+      commit("deleteUser");
     },
   },
-  actions: {},
   mutations: {
-    setUserId(state, userId) {
-      state.userId = userId;
+    setUsersData(state, data) {
+      state.usersData = data;
     },
-    setUserPass(state, userPass) {
-      state.password = userPass;
+    setUsersList(state, data) {
+      state.usersList = data;
     },
-    userLogOut(state) {
-      state.password = "";
-      state.userId = "";
-      localStorage.removeItem("loginInfo");
+    addUser(state, userInfo) {
+      console.log(state.usersList);
+      state.usersList = state.usersList.push(userInfo);
     },
-    logoutTimeout(state) {
-      setTimeout(function () {
-        localStorage.removeItem("loginInfo");
-        state.password = "";
-        state.userId = "";
-      }, 120 * 1000);
-    },
-    registerUser(state, payload) {
-      const date = new Date();
-      state.users.push({
-        userId: payload.uid,
-        userPassword: payload.upassword,
-        userName: payload.uname,
-        userEmail: payload.uemail,
-        date: date.getMonth() + 1 + "/" + date.getDay(),
-        mod: "",
-      });
+    deleteUser(state, userId) {
+      state.userList = state.userList.filter((user) => user.userId !== userId);
     },
     unRegisterUser(state, payload) {
-      const userToRemove = state.users.find((user) => {
+      const userToRemove = state.usersList.find((user) => {
         return user.userId === payload;
       });
-      // state.users = state.users.filter((user) => {
-      //   return user.userId !== userToRemove.userId;
-      // });
-      state.users.splice(state.users.indexOf(userToRemove), 1);
+      state.usersList.splice(state.usersList.indexOf(userToRemove), 1);
     },
   },
 };

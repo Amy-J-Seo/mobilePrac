@@ -10,7 +10,7 @@
           <input
             type="text"
             name="id"
-            v-model="uid"
+            v-model="form.uid"
             placeholder="Enter your id"
           />
         </div>
@@ -20,7 +20,7 @@
           <input
             type="password"
             name="password"
-            v-model="upassword"
+            v-model="form.upassword"
             placeholder="Enter your password"
           />
         </div>
@@ -30,7 +30,7 @@
           <input
             type="text"
             name="name"
-            v-model="uname"
+            v-model="form.uname"
             placeholder="Enter your name"
           />
         </div>
@@ -40,7 +40,7 @@
           <input
             type="email"
             name="email"
-            v-model="uemail"
+            v-model="form.uemail"
             placeholder="Enter your email"
           />
         </div>
@@ -62,32 +62,38 @@
         </div>
       </form>
     </div>
-
     <!-- userList table -->
     <div id="lowerPart">
       <h4>Registered User</h4>
-      <ve-table :columns="columns" :table-data="tableData"></ve-table>
+      <ve-table
+        :columns="columns"
+        :table-data="this.getUsersListAll"
+      ></ve-table>
     </div>
   </div>
 </template>
 
 <script>
 import "vue-easytable/libs/theme-default/index.css";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Register",
   data() {
     return {
       dialogVisible: false,
-      uid: "",
-      upassword: "",
-      uname: "",
-      uemail: "",
+      form: {
+        uid: "",
+        upassword: "",
+        uname: "",
+        uemail: "",
+      },
       columns: [
-        { field: "userId", key: "a", title: "ID" },
-        { field: "userName", key: "c", title: "Name" },
-        { field: "userEmail", key: "d", title: "Email" },
-        { field: "date", key: "e", title: "Date" },
+        { field: "uid", key: "a", title: "ID" },
+        { field: "uname", key: "c", title: "Name" },
+        { field: "uemail", key: "d", title: "Email" },
+
+        // { field: "date", key: "e", title: "Date" },
         {
           field: "mod",
           key: "f",
@@ -97,7 +103,7 @@ export default {
               <span>
                 <button
                   class="button-demo"
-                  on-click={() => this.unRegisterHandler(row)}
+                  on-click={() => this.removeUser(row)}
                 >
                   Unregister
                 </button>
@@ -106,27 +112,29 @@ export default {
           },
         },
       ],
-      tableData: this.$store.state.users,
+      tableData: [],
     };
   },
   computed: {
-    users() {
-      return this.$store.state.users;
-    },
+    ...mapGetters("loginStore", [
+      "getUserId",
+      "getUserPass",
+      "getUsersListAll",
+    ]),
   },
   methods: {
+    ...mapActions("loginStore", [
+      "fetchUsersList",
+      "registerUser",
+      "removeUser",
+    ]),
     returnToMainHandler() {
       this.dialogVisible = false;
       this.$router.push("/main");
     },
     registerUserHandler() {
-      console.log(this.uid, this.upassword, this.uname, this.uemail);
-      this.$store.commit("registerUser", {
-        uid: this.uid,
-        upassword: this.upassword,
-        uname: this.uname,
-        uemail: this.uemail,
-      });
+      console.log(this.form);
+      this.registerUser(this.form);
       this.uid = "";
       this.upassword = "";
       this.uname = "";
@@ -136,6 +144,9 @@ export default {
       console.log(row.userId);
       this.$store.commit("unRegisterUser", row.userId);
     },
+  },
+  created() {
+    this.fetchUsersList();
   },
 };
 </script>
