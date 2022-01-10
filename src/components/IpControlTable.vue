@@ -3,7 +3,7 @@
     <div id="controlTable">
       <ve-table
         :columns="columns"
-        :table-data="allIpList"
+        :table-data="this.ipList"
         row-key-field-name="rowKey"
         :checkbox-option="checkboxOption"
       ></ve-table>
@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 
 const ipStore = "ipStore";
 
@@ -94,6 +94,7 @@ export default {
   name: "IpControlTable",
   data() {
     return {
+      ipLength: 0,
       selected: false,
       dialogVisible: false,
       checkboxOption: {
@@ -196,10 +197,9 @@ export default {
     },
     addIpHandler() {
       this.dialogFormVisible = false;
-
+      console.log("from table onclickaddbtn", this.ipLength);
       const dataToSend = {
-        no: this.ipLength,
-        rowKey: this.ipLength * 1000,
+        no: this.ipLength + 1,
         ip: this.form.ip,
         port: this.form.port,
         url: this.form.url,
@@ -209,16 +209,30 @@ export default {
       this.addNewIp(dataToSend);
     },
     ipDeleteHandler(row, rowIndex) {
-      this.tableData.splice(rowIndex, 1);
+      this.ipList.splice(rowIndex, 1);
       const no = row.no;
       this.removeIp(no);
     },
   },
   computed: {
-    ...mapGetters(ipStore, ["allIpList", "ipLength"]),
+    ...mapGetters(ipStore, []),
+    ...mapState(
+      ipStore,
+      ["ipList"]
+      //   {
+      //   apiIpLength: (state) => {
+      //     console.log(state.ipStore.ipLength);
+      //     this.ipLength = state.ipStore.ipLength;
+      //   },
+      //   apiDate: (state) => state.ipStore.ipList,
+      // }
+    ),
   },
   created() {
     this.fetchIpList();
+  },
+  mounted() {
+    this.ipLength = this.ipList.length;
   },
 };
 </script>
