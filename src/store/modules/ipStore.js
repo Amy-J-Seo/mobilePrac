@@ -82,6 +82,20 @@ const ipStore = {
 
       commit("addNewIpList", resp);
     },
+    async updateIp({ state }, data) {
+      console.log("data check from ipstore update@@@@", data);
+
+      function getKeyByValue(object, value) {
+        return Object.keys(object).find((key) => object[key].no === value);
+      }
+      const ipToUpdate = getKeyByValue(state.ipResponseData, data.no);
+      console.log("update ip ", state.ipResponseData);
+
+      await axios.put(
+        `https://vue-axios-19187-default-rtdb.firebaseio.com/ipList/${ipToUpdate}.json`,
+        data
+      );
+    },
     async removeIp({ state, commit }, no) {
       console.log(state.ipResponseData);
 

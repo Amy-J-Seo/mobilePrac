@@ -81,6 +81,45 @@
         </span>
       </el-dialog>
       <!-- end of form dialog -->
+
+      <!-- detailbtn contents update dialog -->
+      <el-dialog
+        title="Update Registered IP"
+        :visible.sync="dialogDetailVisible"
+        width="90%"
+      >
+        <el-form :model="updateFrm">
+          <el-form-item label="Ip address" :label-width="formLabelWidth">
+            <el-input v-model="updateFrm.ip" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Port" :label-width="formLabelWidth">
+            <el-input v-model="updateFrm.port" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="URL" :label-width="formLabelWidth">
+            <el-input
+              v-model="updateFrm.url"
+              id="url"
+              utocomplete="off"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="Usage" :label-width="formLabelWidth">
+            <el-checkbox type="checkbox" id="usage" v-model="updateFrm.usage" />
+          </el-form-item>
+          <el-form-item label="Date" :label-width="formLabelWidth">
+            <el-date-picker
+              v-model="updateFrm.date"
+              type="date"
+              placeholder="Pick a day"
+            >
+            </el-date-picker>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="updateIpHandler">Update</el-button>
+          <el-button @click="dialogDetailVisible = false">Cancel</el-button>
+        </span>
+      </el-dialog>
+      <!-- end of  detailbtn contents update dialog -->
     </div>
   </div>
 </template>
@@ -97,6 +136,7 @@ export default {
       ipLength: 0,
       selected: false,
       dialogVisible: false,
+      dialogDetailVisible: false,
       checkboxOption: {
         // row select change event
         selectedRowChange: ({ row, isSelected, selectedRowKeys }) => {
@@ -124,10 +164,15 @@ export default {
           field: "detail",
           key: "g",
           title: "Detail",
-          renderBodyCell: () => {
+          renderBodyCell: (row, rowIndex) => {
             return (
               <span>
-                <button class="button-demo">More</button>
+                <button
+                  class="button-demo"
+                  on-click={() => this.updateFrmHandler(row, rowIndex)}
+                >
+                  More
+                </button>
               </span>
             );
           },
@@ -161,6 +206,14 @@ export default {
         usage: false,
         date: "",
       },
+      updateFrm: {
+        no: "",
+        ip: "",
+        port: "",
+        url: "",
+        usage: false,
+        date: "",
+      },
       formLabelWidth: "120px",
       uploadFile: {
         fileName: "",
@@ -169,7 +222,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(ipStore, ["fetchIpList", "addNewIp", "removeIp"]),
+    ...mapActions(ipStore, ["fetchIpList", "addNewIp", "removeIp", "updateIp"]),
     ...mapMutations(ipStore, []),
     increaseNum() {
       this.inputFormNo = this.inputFormNo + 10;
@@ -213,6 +266,35 @@ export default {
       const no = row.no;
       this.removeIp(no);
     },
+    updateFrmHandler(row) {
+      this.dialogDetailVisible = true;
+      const ipToUpdate = this.ipList.find((ip) => ip.no === row.row.no);
+      this.updateFrm.no = ipToUpdate.no;
+      this.updateFrm.ip = ipToUpdate.ip;
+      this.updateFrm.port = ipToUpdate.port;
+      this.updateFrm.url = ipToUpdate.url;
+      this.updateFrm.usage = ipToUpdate.usage;
+      this.updateFrm.date = ipToUpdate.date;
+
+      console.log(row.row.no, "update frm is visible");
+    },
+    updateIpHandler() {
+      this.dialogDetailVisible = false;
+      const dataToSend = {
+        no: this.updateFrm.no,
+        ip: this.updateFrm.ip,
+        port: this.updateFrm.port,
+        url: this.updateFrm.url,
+        usage: this.updateFrm.usage,
+        date: this.updateFrm.date,
+      };
+      this.updateIp(dataToSend);
+      const rowIndexToUpdate = this.ipList.findIndex(
+        (item) => item.no === dataToSend.no
+      );
+      console.log(this.ipList[rowIndexToUpdate]);
+      this.ipList[rowIndexToUpdate] = dataToSend; //?????
+    },
   },
   computed: {
     ...mapGetters(ipStore, []),
@@ -228,6 +310,11 @@ export default {
       // }
     ),
   },
+  // watch: {
+  //   ipList: function (newList) {
+  //     this.ipList = newList;
+  //   }, //??????
+  // },
   created() {
     this.fetchIpList();
   },
