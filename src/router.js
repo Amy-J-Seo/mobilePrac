@@ -7,6 +7,7 @@ import PasswordChange from "./components/PasswordChange.vue";
 import Setting from "./components/Setting.vue";
 import Register from "./components/Register.vue";
 import IpControl from "./components/IpControl.vue";
+import NestedComponent from "./views/NestedComponent.vue";
 
 Vue.use(VueRouter);
 
@@ -18,6 +19,7 @@ const route = [
   { path: "/setting", component: Setting },
   { path: "/register", component: Register },
   { path: "/ipcontrol", component: IpControl },
+  { path: "/component", component: NestedComponent },
 ];
 
 const router = new VueRouter({

@@ -3,6 +3,7 @@
     <router-link to="/about" id="logo"> 제품로고 </router-link>
     <div :class="[linkVisible ? 'active' : 'notactive']" id="myLinks">
       <router-link to="/about" class="navlink">Main</router-link>
+      <router-link to="/component" class="navlink">Component</router-link>
       <router-link to="/login" class="navlink">Login</router-link>
       <router-link to="/contactus" class="navlink"> Table page </router-link>
       <router-link to="/changepassword" class="navlink">
